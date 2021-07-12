@@ -1003,7 +1003,8 @@
             customArrowPrevSymbol: null,
             customArrowNextSymbol: null,
             monthSelect: false,
-            yearSelect: false
+            yearSelect: false,
+            swapControlBar: false
         }, opt);
 
         opt.start = false;
@@ -2262,6 +2263,86 @@
                 '</div>';
         }
 
+        function getControlBar() {
+            var html =  '<div class="drp_top-bar">';
+
+            if (opt.customTopBar) {
+                if (typeof opt.customTopBar == 'function') opt.customTopBar = opt.customTopBar();
+                html += '<div class="custom-top">' + opt.customTopBar + '</div>';
+            } else {
+                html += '<div class="normal-top">' +
+                    '<span class="selection-top">' + translate('selected') + ' </span> <b class="start-day">...</b>';
+                if (!opt.singleDate) {
+                    html += ' <span class="separator-day">' + opt.separator + '</span> <b class="end-day">...</b> <i class="selected-days">(<span class="selected-days-num">3</span> ' + translate('days') + ')</i>';
+                }
+                html += '</div>';
+                html += '<div class="error-top">error</div>' +
+                    '<div class="default-top">default</div>';
+            }
+
+            html += '<input type="button" class="apply-btn disabled' + getApplyBtnClass() + '" value="' + translate('apply') + '" />';
+            html += '</div>';
+            return html
+        }
+        function getShortCuts() {
+            if(opt.showShortcuts) {
+                var html = '<div class="shortcuts"><b>' + translate('shortcuts') + '</b>';
+
+                var data = opt.shortcuts;
+                if (data) {
+                    var name;
+                    if (data['prev-days'] && data['prev-days'].length > 0) {
+                        html += '&nbsp;<span class="prev-days">' + translate('past');
+                        for (var i = 0; i < data['prev-days'].length; i++) {
+                            name = data['prev-days'][i];
+                            name += (data['prev-days'][i] > 1) ? translate('days') : translate('day');
+                            html += ' <a href="javascript:;" shortcut="day,-' + data['prev-days'][i] + '">' + name + '</a>';
+                        }
+                        html += '</span>';
+                    }
+
+                    if (data['next-days'] && data['next-days'].length > 0) {
+                        html += '&nbsp;<span class="next-days">' + translate('following');
+                        for (var i = 0; i < data['next-days'].length; i++) {
+                            name = data['next-days'][i];
+                            name += (data['next-days'][i] > 1) ? translate('days') : translate('day');
+                            html += ' <a href="javascript:;" shortcut="day,' + data['next-days'][i] + '">' + name + '</a>';
+                        }
+                        html += '</span>';
+                    }
+
+                    if (data.prev && data.prev.length > 0) {
+                        html += '&nbsp;<span class="prev-buttons">' + translate('previous');
+                        for (var i = 0; i < data.prev.length; i++) {
+                            name = translate('prev-' + data.prev[i]);
+                            html += ' <a href="javascript:;" shortcut="prev,' + data.prev[i] + '">' + name + '</a>';
+                        }
+                        html += '</span>';
+                    }
+
+                    if (data.next && data.next.length > 0) {
+                        html += '&nbsp;<span class="next-buttons">' + translate('next');
+                        for (var i = 0; i < data.next.length; i++) {
+                            name = translate('next-' + data.next[i]);
+                            html += ' <a href="javascript:;" shortcut="next,' + data.next[i] + '">' + name + '</a>';
+                        }
+                        html += '</span>';
+                    }
+                }
+
+                    if (opt.customShortcuts) {
+                        for (var i = 0; i < opt.customShortcuts.length; i++) {
+                            var sh = opt.customShortcuts[i];
+                            html += '&nbsp;<span class="custom-shortcut"><a href="javascript:;" shortcut="custom">' + sh.name + '</a></span>';
+                            }
+                        }
+                    html += '</div>';
+            }
+            else {
+                html ='';
+            }
+            return html;
+        } 
         function createDom() {
             var html = '<div class="date-picker-wrapper';
             if (opt.extraClass) html += ' ' + opt.extraClass + ' ';
@@ -2272,24 +2353,7 @@
             html += '">';
 
             if (opt.showTopbar) {
-                html += '<div class="drp_top-bar">';
-
-                if (opt.customTopBar) {
-                    if (typeof opt.customTopBar == 'function') opt.customTopBar = opt.customTopBar();
-                    html += '<div class="custom-top">' + opt.customTopBar + '</div>';
-                } else {
-                    html += '<div class="normal-top">' +
-                        '<span class="selection-top">' + translate('selected') + ' </span> <b class="start-day">...</b>';
-                    if (!opt.singleDate) {
-                        html += ' <span class="separator-day">' + opt.separator + '</span> <b class="end-day">...</b> <i class="selected-days">(<span class="selected-days-num">3</span> ' + translate('days') + ')</i>';
-                    }
-                    html += '</div>';
-                    html += '<div class="error-top">error</div>' +
-                        '<div class="default-top">default</div>';
-                }
-
-                html += '<input type="button" class="apply-btn disabled' + getApplyBtnClass() + '" value="' + translate('apply') + '" />';
-                html += '</div>';
+                html += opt.swapControlBar ?  getShortCuts() : getControlBar();
             }
 
             var _colspan = opt.showWeekNumbers ? 6 : 5;
@@ -2352,58 +2416,8 @@
                 '</div>';
 
             html += '<div class="footer">';
-            if (opt.showShortcuts) {
-                html += '<div class="shortcuts"><b>' + translate('shortcuts') + '</b>';
-
-                var data = opt.shortcuts;
-                if (data) {
-                    var name;
-                    if (data['prev-days'] && data['prev-days'].length > 0) {
-                        html += '&nbsp;<span class="prev-days">' + translate('past');
-                        for (var i = 0; i < data['prev-days'].length; i++) {
-                            name = data['prev-days'][i];
-                            name += (data['prev-days'][i] > 1) ? translate('days') : translate('day');
-                            html += ' <a href="javascript:;" shortcut="day,-' + data['prev-days'][i] + '">' + name + '</a>';
-                        }
-                        html += '</span>';
-                    }
-
-                    if (data['next-days'] && data['next-days'].length > 0) {
-                        html += '&nbsp;<span class="next-days">' + translate('following');
-                        for (var i = 0; i < data['next-days'].length; i++) {
-                            name = data['next-days'][i];
-                            name += (data['next-days'][i] > 1) ? translate('days') : translate('day');
-                            html += ' <a href="javascript:;" shortcut="day,' + data['next-days'][i] + '">' + name + '</a>';
-                        }
-                        html += '</span>';
-                    }
-
-                    if (data.prev && data.prev.length > 0) {
-                        html += '&nbsp;<span class="prev-buttons">' + translate('previous');
-                        for (var i = 0; i < data.prev.length; i++) {
-                            name = translate('prev-' + data.prev[i]);
-                            html += ' <a href="javascript:;" shortcut="prev,' + data.prev[i] + '">' + name + '</a>';
-                        }
-                        html += '</span>';
-                    }
-
-                    if (data.next && data.next.length > 0) {
-                        html += '&nbsp;<span class="next-buttons">' + translate('next');
-                        for (var i = 0; i < data.next.length; i++) {
-                            name = translate('next-' + data.next[i]);
-                            html += ' <a href="javascript:;" shortcut="next,' + data.next[i] + '">' + name + '</a>';
-                        }
-                        html += '</span>';
-                    }
-                }
-
-                if (opt.customShortcuts) {
-                    for (var i = 0; i < opt.customShortcuts.length; i++) {
-                        var sh = opt.customShortcuts[i];
-                        html += '&nbsp;<span class="custom-shortcut"><a href="javascript:;" shortcut="custom">' + sh.name + '</a></span>';
-                    }
-                }
-                html += '</div>';
+            if (opt.showShortcuts || opt.swapControlBar) {
+                html +=  opt.swapControlBar ? getControlBar() : getShortCuts();
             }
 
             // Add Custom Values Dom

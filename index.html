@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>jQuery Date Range Picker Demo</title>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="dist/daterangepicker.min.css"/>
+    <link rel="stylesheet" href="/dist/daterangepicker.css"/>
     <style type="text/css">
         #wrapper {
             width: 800px;
@@ -725,6 +725,15 @@ $('#date-range16-reset').click(function(evt)
     yearSelect: true,
     startDate: moment().subtract(3, 'months').format('YYYY-MM-DD'),
     endDate: moment().endOf('day').format('YYYY-MM-DD'),
+}
+				</pre>
+            </li>
+            <li class="demo">
+                swap toolbar to bottom: <input id="date-range56" size="30" value="">
+                <a href="#" class="show-option">Show Config</a>
+                <pre class="options">
+{
+    swapControlBar: true
 }
 				</pre>
             </li>
