@@ -19,7 +19,7 @@
   z-index: 1;
   border: 1px solid #bfbfbf;
   background-color: #efefef;
-  padding: 5px 12px;
+  padding: 5px 5px;
   font-size: 12px;
   line-height: 20px;
   color: #aaa;
@@ -88,6 +88,7 @@
 .date-picker-wrapper .month-element {
   display: inline-block;
   vertical-align: middle;
+  font-size: 1.2em;
 }
 
 .date-picker-wrapper .select-wrapper select {
@@ -124,7 +125,7 @@
 }
 
 .date-picker-wrapper .month-wrapper table {
-  width: 190px;
+  width: 200px;
   float: left;
 }
 
@@ -144,7 +145,7 @@
 .date-picker-wrapper .month-wrapper table .day {
   padding: 5px 0;
   line-height: 1;
-  font-size: 12px;
+  font-size: 1.2em;
   margin-bottom: 1px;
   color: #ccc;
   cursor: default;
@@ -298,7 +299,7 @@
 .date-picker-wrapper .drp_top-bar {
   line-height: 1.4;
   position: relative;
-  padding: 10px 40px 10px 0;
+  padding: 2px 5px 5px 0;
 }
 
 .date-picker-wrapper .drp_top-bar .error-top, .date-picker-wrapper .drp_top-bar .normal-top {
@@ -331,7 +332,7 @@
 }
 
 .date-picker-wrapper .drp_top-bar .apply-btn {
-  position: absolute;
+  /*! position: ; */
   right: 0px;
   top: 6px;
   padding: 3px 5px;
@@ -346,6 +347,7 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
   color: white;
   line-height: initial;
+  display: inline;
 }
 
 .date-picker-wrapper .drp_top-bar .apply-btn.disabled {
